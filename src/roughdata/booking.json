@@ -1,0 +1,134 @@
+{
+    "userBookingId": "BID-0006",
+    "checkInDate": "2025-09-02T18:15:00.000Z",
+    "checkOutDate": "2025-09-02T18:15:00.000Z",
+    "status": "CONFIRMED",
+    "payment_status": "CASH_ON_DELIVERY",
+    "totalPrice": 120,
+    "bookingDate": "2025-08-23T16:22:17.649Z",
+    "customerId": 78,
+    "hotelId": 4,
+    "customer": {
+        "createdAt": "2025-08-23T16:22:17.730Z",
+        "isActive": true,
+        "id": 78,
+        "name": "Rahul Prasad",
+        "email": "rahulstart2@example.com",
+        "mobileNumber": "9819828300",
+        "CredentialType": "ADMIN",
+        "associated_internal_company_id": 4,
+        "emailVerified": false,
+        "profilePictureUrl": null,
+        "password": null,
+        "refreshToken": null,
+        "verifyEmailToken": null
+    },
+    "id": 7,
+    "bookedRoomResult": [
+        {
+            "userBookingRoomId": "BRID-0010",
+            "bookingId": 7,
+            "roomById": 11,
+            "room_status": "BOOKED",
+            "booking": {
+                "id": 7,
+                "userBookingId": "BID-0006",
+                "checkInDate": "2025-09-02T18:15:00.000Z",
+                "checkOutDate": "2025-09-02T18:15:00.000Z",
+                "status": "CONFIRMED",
+                "payment_status": "CASH_ON_DELIVERY",
+                "totalPrice": 120,
+                "bookingDate": "2025-08-23T16:22:17.649Z",
+                "customerId": 78,
+                "hotelId": 4,
+                "customer": {
+                    "createdAt": "2025-08-23T16:22:17.730Z",
+                    "isActive": true,
+                    "id": 78,
+                    "name": "Rahul Prasad",
+                    "email": "rahulstart2@example.com",
+                    "mobileNumber": "9819828300",
+                    "CredentialType": "ADMIN",
+                    "associated_internal_company_id": 4,
+                    "emailVerified": false,
+                    "profilePictureUrl": null,
+                    "password": null,
+                    "refreshToken": null,
+                    "verifyEmailToken": null
+                }
+            },
+            "room": {
+                "id": 11,
+                "roomNumber": "307",
+                "isActive": true,
+                "internal_company_id": 4,
+                "roomType": {
+                    "id": 2,
+                    "name": "Deluxe",
+                    "description": null,
+                    "facilities": [
+                        "WIFI",
+                        "AIR_CONDITIONING",
+                        "TV",
+                        "MINI_BAR"
+                    ],
+                    "isActive": true,
+                    "thumbnailUrlId": null,
+                    "roomPrice": "110.00",
+                    "total_number_of_rooms": 10
+                }
+            },
+            "id": 10
+        },
+        {
+            "userBookingRoomId": "BRID-0011",
+            "bookingId": 7,
+            "roomById": 7,
+            "room_status": "BOOKED",
+            "booking": {
+                "id": 7,
+                "userBookingId": "BID-0006",
+                "checkInDate": "2025-09-02T18:15:00.000Z",
+                "checkOutDate": "2025-09-02T18:15:00.000Z",
+                "status": "CONFIRMED",
+                "payment_status": "CASH_ON_DELIVERY",
+                "totalPrice": 120,
+                "bookingDate": "2025-08-23T16:22:17.649Z",
+                "customerId": 78,
+                "hotelId": 4,
+                "customer": {
+                    "createdAt": "2025-08-23T16:22:17.730Z",
+                    "isActive": true,
+                    "id": 78,
+                    "name": "Rahul Prasad",
+                    "email": "rahulstart2@example.com",
+                    "mobileNumber": "9819828300",
+                    "CredentialType": "ADMIN",
+                    "associated_internal_company_id": 4,
+                    "emailVerified": false,
+                    "profilePictureUrl": null,
+                    "password": null,
+                    "refreshToken": null,
+                    "verifyEmailToken": null
+                }
+            },
+            "room": {
+                "id": 7,
+                "roomNumber": "403",
+                "isActive": true,
+                "internal_company_id": 4,
+                "roomType": {
+                    "id": 3,
+                    "name": "2BHK",
+                    "description": null,
+                    "facilities": ["WIFI", "AIR_CONDITIONING"],
+                    "isActive": true,
+                    "thumbnailUrlId": null,
+                    "roomPrice": "10.00",
+                    "total_number_of_rooms": 110
+                }
+            },
+            "id": 11
+        }
+    ]
+}

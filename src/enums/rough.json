@@ -1,0 +1,37 @@
+[
+    {
+        "id": 16,
+        "firstName": "Rahul",
+        "lastName": "Shah",
+        "emailVerified": false,
+        "isActive": false,
+        "createdAt": "2025-07-20 22:55:30.929",
+        "email": "rahulshaffh@example.com",
+        "profilePictureUrl": null,
+        "password": null,
+        "employeeId": "PMA-15",
+        "department": null,
+        "role": "Manager",
+        "mobileNumber": "+9779800000000",
+        "refreshToken": null,
+        "verifyEmailToken": "b1b271556ddad986e27c1f6a4b9ffd003b5660d0a0472c872d2042512ec65557"
+    },
+
+    {
+        "id": 16,
+        "firstName": "Rahul",
+        "lastName": "Shah",
+        "emailVerified": true,
+        "isActive": true,
+        "createdAt": "2025-07-20 22:55:30.929",
+        "email": "rahulshaffh@example.com",
+        "profilePictureUrl": null,
+        "password": "$2b$10$f21RZXsVQfdllpz72ip4qODdSIbRqsL6KtKvnzN6uliObPHJyiKei",
+        "employeeId": "PMA-15",
+        "department": null,
+        "role": "Manager",
+        "mobileNumber": "+9779800000000",
+        "refreshToken": null,
+        "verifyEmailToken": "b1b271556ddad986e27c1f6a4b9ffd003b5660d0a0472c872d2042512ec65557"
+    }
+]

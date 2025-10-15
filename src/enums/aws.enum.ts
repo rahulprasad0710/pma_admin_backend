@@ -1,0 +1,5 @@
+export enum UPLOAD_TYPE {
+    PUBLIC = "PUBLIC",
+    PRIVATE = "PRIVATE",
+    PERSONAL = "PERSONAL",
+}
