@@ -25,7 +25,7 @@ startJobs();
 
 const io = new Server(httpServer, {
     cors: {
-        origin: "http://localhost:5173",
+        origin: ["http://localhost:5173", "https://workcentrik.publicvm.com"],
         methods: ["GET", "POST"],
         credentials: true,
     },
@@ -42,7 +42,11 @@ io.on("connection", (socket) => {
 app.use(express.json());
 app.use(
     cors({
-        origin: ["http://localhost:5173", "http://localhost:3000"],
+        origin: [
+            "http://localhost:5173",
+            "http://localhost:3000",
+            "https://workcentrik.publicvm.com",
+        ],
         credentials: true,
     })
 );
