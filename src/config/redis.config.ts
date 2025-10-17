@@ -9,6 +9,7 @@ Meaningful logs with client count on successful connection.
 lazyConnect: true → prevents immediate connection until .connect() is called.
 await client.connect() → ensures Redis is fully connected before returning.
 */
+import APP_CONSTANT from "../constants/AppConfig";
 
 export class RedisConfig {
     private static instance: RedisClient | null = null;
@@ -21,9 +22,12 @@ export class RedisConfig {
             return this.instance;
         }
 
+        const redisHost = APP_CONSTANT.REDIS_HOST as string;
+        const redisPort = APP_CONSTANT.REDIS_PORT as number;
+
         const client = new Redis({
-            host: "localhost",
-            port: 6379,
+            host: redisHost,
+            port: redisPort,
             lazyConnect: true,
 
             // Auto-reconnect strategy

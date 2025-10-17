@@ -27,4 +27,4 @@ jobs:
       - name: Delete old container
         run: docker rm -f pma_admin_backend-container
       - name: Run Docker Container
-        run: docker run -d -p 8000:8000 --memory="512m" --cpus="0.5"  --name pma_admin_backend-container  --env-file /home/ubuntu/pma_admin_backend/.env rahulshah10/pma_admin_backend:latest
+        run: docker run -d -p 8000:8000 --memory="512m" --cpus="0.5"  --name pma_admin_backend-container  --env-file /home/ubuntu/pma_admin_backend_app/.env rahulshah10/pma_admin_backend:latest

@@ -1,3 +1,4 @@
+import APP_CONSTANT from "../constants/AppConfig";
 import { AdminAudit } from "../db/entity/AdminAudit";
 import { TEmail } from "../types/types";
 import { getAdminAuditQueue } from "./AdminAudit.queue";
@@ -5,10 +6,13 @@ import { getEmailQueue } from "./emailQueue";
 import { insertAuditLog } from "../services/loggin.service";
 import { sendEmail } from "../config/email.config";
 
+const redisHost = APP_CONSTANT.REDIS_HOST as string;
+const redisPort = APP_CONSTANT.REDIS_PORT as number;
+
 export const redisConfig = {
     redis: {
-        port: 6379, // Redis server port
-        host: "localhost", // Redis server host
+        port: redisPort,
+        host: redisHost,
     },
 };
 
