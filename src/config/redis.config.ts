@@ -32,6 +32,10 @@ export class RedisConfig {
 
             // Auto-reconnect strategy
             retryStrategy: (times: number) => {
+                console.log({
+                    redisHost,
+                    redisPort,
+                });
                 const delay = Math.min(times * 200, 5000); // cap at 5s
                 console.warn(
                     `Redis reconnect attempt #${times} (retry in ${delay}ms)`
