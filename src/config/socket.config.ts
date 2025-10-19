@@ -26,9 +26,14 @@ export const socketIORef: ISocketIORef = {
 export function socketConnect(httpServer: import("http").Server) {
     const io = new Server(httpServer, {
         cors: {
+            origin: [
+                "https://workcentrik.publicvm.com",
+                "http://localhost:5173",
+            ],
+            methods: ["GET", "POST"],
             credentials: true,
-            origin: AppConfig.CLIENT_BASE_URL,
         },
+        transports: ["websocket", "polling"],
     });
 
     socketIORef.io = io;
