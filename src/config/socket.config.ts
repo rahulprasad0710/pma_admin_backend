@@ -30,9 +30,13 @@ export function socketConnect(httpServer: import("http").Server) {
                 "https://workcentrik.publicvm.com",
                 "http://localhost:5173",
             ],
+
             methods: ["GET", "POST"],
             credentials: true,
         },
+        allowUpgrades: true,
+        maxHttpBufferSize: 1e8,
+        connectTimeout: 45000,
         transports: ["websocket", "polling"],
     });
 

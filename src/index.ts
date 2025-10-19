@@ -23,22 +23,6 @@ const port = Number(process.env.PORT) || 3000;
 connectToDatabase();
 startJobs();
 
-const io = new Server(httpServer, {
-    cors: {
-        origin: ["http://localhost:5173", "https://workcentrik.publicvm.com"],
-        methods: ["GET", "POST"],
-        credentials: true,
-    },
-});
-
-io.on("connection", (socket) => {
-    console.log(`Client connected: ${socket.id}`);
-
-    socket.on("disconnect", () => {
-        console.log(`Client disconnected: ${socket.id}`);
-    });
-});
-
 app.use(express.json());
 app.use(
     cors({
