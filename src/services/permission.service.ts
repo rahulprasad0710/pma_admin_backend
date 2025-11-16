@@ -37,9 +37,18 @@ export class PermissionService {
         return result;
     }
 
-    async getAllPermissionGroups() {
+    async getAllPermissionGroups({
+        permissionTypes,
+        isActive,
+    }: {
+        permissionTypes?: string;
+        isActive?: boolean;
+    }) {
         const result = await this.permissionGroupRepository.find({
-            where: { isActive: true },
+            where: {
+                isActive: isActive,
+                permission_type: permissionTypes,
+            },
         });
 
         return {

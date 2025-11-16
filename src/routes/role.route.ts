@@ -17,9 +17,34 @@ router.post(
     }),
     asyncTryCatchFn(roleController.create)
 );
-router.get("", applyPagination, roleController.getAll);
-router.put("/status/:id", roleController.deactivate);
-router.put("/:id", roleController.update);
-router.get("/:id", roleController.getById);
+router.get(
+    "",
+    authorizePermission({
+        permissionName: SUPER_ADMIN_PERMISSION_ENUM.READ_ROLE,
+    }),
+    applyPagination,
+    roleController.getAll
+);
+router.put(
+    "/status/:id",
+    authorizePermission({
+        permissionName: SUPER_ADMIN_PERMISSION_ENUM.DELETE_ROLE,
+    }),
+    roleController.deactivate
+);
+router.put(
+    "/:id",
+    authorizePermission({
+        permissionName: SUPER_ADMIN_PERMISSION_ENUM.UPDATE_ROLE,
+    }),
+    roleController.update
+);
+router.get(
+    "/:id",
+    authorizePermission({
+        permissionName: SUPER_ADMIN_PERMISSION_ENUM.READ_ROLE,
+    }),
+    roleController.getById
+);
 
 export default router;
