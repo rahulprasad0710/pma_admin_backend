@@ -11,15 +11,11 @@ interface ITaskStatus {
 }
 
 export class TaskStatusService {
-    constructor(
-        private readonly taskStatusRepository = dataSource.getRepository(
-            TaskStatus
-        ),
+    private readonly taskStatusRepository =
+        dataSource.getRepository(TaskStatus);
 
-        private readonly projectTaskStatusRepository = dataSource.getRepository(
-            ProjectTaskStatus
-        )
-    ) {}
+    private readonly projectTaskStatusRepository =
+        dataSource.getRepository(ProjectTaskStatus);
     /**
      * Create a new task status
      * @param status - The task status to create

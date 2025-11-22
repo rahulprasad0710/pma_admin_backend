@@ -4,16 +4,22 @@ import { Feature } from "../db/entity/Feature";
 import { FeatureTaskStatus } from "../db/entity/FeatureTaskStatus";
 import { ILike } from "typeorm";
 import { IUploadSignedUrlResponse } from "./upload.service";
+import { TaskStatus } from "../db/entity/taskStatus";
 import UploadService from "./upload.service";
 import { User } from "../db/entity/User";
 import createPagination from "../utils/createPagination";
 import dataSource from "../db/data-source";
 import { sanitizeEmployeeResult } from "../utils/sanitizeCustomer";
+import { taskStatus } from "./../../../client/src/db/schema";
 
 const uploadService = new UploadService();
 
 class FeatureService {
     private readonly featureRepository = dataSource.getRepository(Feature);
+
+    private readonly taskStatusRepository =
+        dataSource.getRepository(TaskStatus);
+
     private readonly userRepository = dataSource.getRepository(User);
     private readonly featureTaskStatusRepository =
         dataSource.getRepository(FeatureTaskStatus);
@@ -34,6 +40,8 @@ class FeatureService {
             profilePictureResponse = null;
         }
 
+        const featureTaskStatusResponse = await this.getFeatureTaskStatus(id);
+
         return {
             ...result,
             featureTeamMember: result?.featureTeamMember?.map((user) => {
@@ -43,6 +51,7 @@ class FeatureService {
                 ? sanitizeEmployeeResult({ employee: result?.admin })
                 : {},
             profilePictureResponse,
+            featureTaskStatus: featureTaskStatusResponse?.result || [],
         };
     }
 
@@ -73,7 +82,7 @@ class FeatureService {
     }
 
     async update(id: number, updateFields: Partial<IFeaturePayload>) {
-        const { featureTeamMember } = updateFields;
+        const { featureTeamMember, featureTaskStatus } = updateFields;
 
         const result = await this.featureRepository.findOneBy({ id });
         if (!result) throw new Error("Feature not found");
@@ -85,14 +94,14 @@ class FeatureService {
             await this.addTeamMember(id, featureTeamMember);
         }
 
+        if (featureTaskStatus) {
+            await this.deleteTaskStatus(id);
+            await this.addTaskStatus(id, featureTaskStatus);
+        }
         return response;
     }
 
     async addTeamMember(featureId: number, userIds: number[]) {
-        console.log({
-            featureId,
-            userIds,
-        });
         const feature = await this.featureRepository.findOne({
             where: { id: featureId },
             relations: ["featureTeamMember"],
@@ -108,11 +117,6 @@ class FeatureService {
             )
         ).filter((user): user is User => user !== null);
 
-        console.log({
-            feature,
-            userList,
-        });
-
         if (feature !== null && userList !== null && userList.length > 0) {
             feature.featureTeamMember = userList;
             const response = await this.featureRepository.save(feature);
@@ -120,6 +124,33 @@ class FeatureService {
                 return response;
             }
         }
+    }
+
+    async addTaskStatus(featureId: number, taskStatusIds: number[]) {
+        const result = await Promise.all(
+            taskStatusIds?.map(async (item) => {
+                const taskStatus = await this.taskStatusRepository.findOneBy({
+                    id: item,
+                });
+
+                if (taskStatus) {
+                    const response =
+                        await this.featureTaskStatusRepository.save({
+                            feature_id: featureId,
+                            taskStatus: taskStatus,
+                        });
+                    return response;
+                }
+            })
+        );
+        return result;
+    }
+
+    async deleteTaskStatus(featureId: number) {
+        const result = await this.featureTaskStatusRepository.delete({
+            feature_id: featureId,
+        });
+        return result;
     }
 
     async getFeatureTaskStatus(id: number) {

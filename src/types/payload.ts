@@ -99,4 +99,5 @@ export interface IFeaturePayload {
     profilePicture: string;
     featureTeamMember: number[];
     admin: number;
+    featureTaskStatus: number[];
 }

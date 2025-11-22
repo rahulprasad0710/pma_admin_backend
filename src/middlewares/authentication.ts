@@ -89,7 +89,6 @@ const verifyToken = async (
         const userId = await decodeToken(token);
 
         const user = await authService.authenticateUser(userId, true);
-        console.log("LOG: ~ verifyToken ~ user:", user);
 
         if (!user) {
             res.status(401).json({

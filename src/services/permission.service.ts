@@ -44,12 +44,22 @@ export class PermissionService {
         permissionTypes?: string;
         isActive?: boolean;
     }) {
-        const result = await this.permissionGroupRepository.find({
-            where: {
-                isActive: isActive,
-                permission_type: permissionTypes,
-            },
-        });
+        let result = null;
+
+        if (permissionTypes === "ALL") {
+            result = await this.permissionGroupRepository.find({
+                where: {
+                    isActive: isActive,
+                },
+            });
+        } else {
+            result = await this.permissionGroupRepository.find({
+                where: {
+                    isActive: isActive,
+                    permission_type: permissionTypes,
+                },
+            });
+        }
 
         return {
             result,

@@ -47,6 +47,8 @@ const update = async (req: Request, res: Response) => {
         active: req.body.active,
         profilePicture: req.body.profilePicture,
         featureTeamMember: req.body.featureTeamMember,
+        featureTaskStatus: req.body.featureTaskStatus,
+
         admin: req.body.admin,
     };
 
