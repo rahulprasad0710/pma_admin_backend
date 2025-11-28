@@ -11,7 +11,11 @@ import PermissionService from "../services/permission.service";
 const permissionService = new PermissionService();
 
 const getAllPermissionGroups = async (req: Request, res: Response) => {
-    const groups = await permissionService.getAllPermissionGroups();
+    const { permissionTypes, isActive } = req.query;
+    const groups = await permissionService.getAllPermissionGroups({
+        permissionTypes: permissionTypes as string,
+        isActive: isActive === "true",
+    });
     res.status(200).json({
         success: true,
         data: groups,

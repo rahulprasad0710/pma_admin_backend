@@ -1,5 +1,6 @@
 import {
     IBookingResponse,
+    IBookingResponseDetails,
     ITask,
     ITaskPagination,
     IUpdateTaskPayload,
@@ -37,9 +38,11 @@ export class TaskService {
         taskObj.description = task.description;
         taskObj.addedDate = task.addedDate;
         taskObj.assignedBy = task.assignedBy;
-        // taskObj.status = task.status;
+        taskObj.task_status_id = 1;
         taskObj.priority = task.priority;
-        taskObj.project = task.project;
+        if (task.project) {
+            taskObj.project = task.project;
+        }
         taskObj.feature = task.featureId;
         taskObj.sprint = task.sprint;
         if (task.taskLabel) {
@@ -57,33 +60,56 @@ export class TaskService {
         return await this.taskRepository.save(taskObj);
     }
 
-    async createTaskForBooking(booking: IBookingResponse) {
+    async createTaskForBooking(booking: IBookingResponseDetails) {
         const payload = new Task();
 
+        const roomsList = booking.bookedRoomResult
+            .map(
+                (r) => `
+        <li>
+          Room ${r.room.roomNumber} - ${r.room.roomType.name} 
+          <br/>
+          Price: $${r.room.roomType.roomPrice}
+        </li>
+      `
+            )
+            .join("");
+
         payload.taskNumber = `JT-${booking.userBookingId}`;
-        payload.title = `New Booking ${booking.userBookingId}: ${booking.customer.name}`;
+        payload.title = `Booking Id:-  ${booking.userBookingId}: ${booking.customer.name}`;
         payload.description = `
-                                Booking ID: ${booking.userBookingId}
-                                Customer: ${booking.customer.name} (${
-            booking.customer.email
-        }, ${booking.customer.mobileNumber})
-                                Check-in: ${booking.checkInDate}
-                                Check-out: ${booking.checkOutDate}
-                                Total Price: $${booking.totalPrice}
-                                Payment: ${booking.payment_status}
-                                Rooms:
-                                ${booking.bookedRoomResult
-                                    .map(
-                                        (r) =>
-                                            `Room ${r.room.roomNumber} - ${
-                                                r.room.roomType.name
-                                            } [${r.room.roomType.facilities.join(
-                                                ", "
-                                            )}]`
-                                    )
-                                    .join("\n")} `;
+                                <h1>Booking Confirmation</h1>
+                                <p>Customer Name:  ${booking.customer.name},</p>
+                                <p>Booking Id <strong>${
+                                    booking.userBookingId
+                                }</strong> has been confirmed.</p>
+                                <p><strong>Check-in:</strong> ${new Date(
+                                    booking.checkInDate
+                                ).toLocaleString()}</p>
+                                <p><strong>Check-out:</strong> ${new Date(
+                                    booking.checkOutDate
+                                ).toLocaleString()}</p>
+                                <p><strong>Total Price:</strong> $${
+                                    booking.totalPrice
+                                }</p>
+                                <p><strong>Payment Method:</strong> ${
+                                    booking.payment_status
+                                }</p>
+                                <h3>Rooms Booked:</h3>
+                                <ul>${roomsList}</ul>
+                                <br/> `;
+
         payload.addedDate = new Date(booking.bookingDate);
+        payload.added_by_id = booking.addedBy;
+        payload.assigned_to_id = booking.addedBy;
+        payload.task_label = 1;
+        payload.sprint_id = 1;
+        payload.task_status_id = 1;
+        payload.feature_id = 1;
         payload.priority = Priority.MEDIUM;
+
+        const result = await this.taskRepository.save(payload);
+        return result;
     }
 
     async getAll(query: ITaskPagination) {
@@ -160,7 +186,9 @@ export class TaskService {
             taskObj.assignedBy = task.assignedBy;
             // taskObj.status = task.status;
             taskObj.priority = task.priority;
-            taskObj.project = task.project;
+            // if (taskObj.project) {
+            //     taskObj.project = task.project;
+            // }
             const response = await this.taskRepository.update(id, taskObj);
 
             if (task.taskUploads && task.updatedTaskUploads) {

@@ -2,6 +2,7 @@ import {
     BOOKING_EMAIL,
     BOOKING_LOGS,
     BOOKING_NOTIFICATION,
+    BOOKING_TASK,
 } from "../../events/bookingEvents";
 import { Request, Response } from "express";
 
@@ -42,6 +43,12 @@ export class BookingController {
             eventBus.emit(BOOKING_EMAIL, result);
             eventBus.emit(BOOKING_LOGS, result);
             eventBus.emit(BOOKING_NOTIFICATION, {
+                ...result,
+                addedBy: 1,
+                feature_id: req.body.feature_id,
+            });
+
+            eventBus.emit(BOOKING_TASK, {
                 ...result,
                 addedBy: 1,
                 feature_id: req.body.feature_id,

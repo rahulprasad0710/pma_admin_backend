@@ -89,7 +89,6 @@ const verifyToken = async (
         const userId = await decodeToken(token);
 
         const user = await authService.authenticateUser(userId, true);
-        console.log("LOG: ~ verifyToken ~ user:", user);
 
         if (!user) {
             res.status(401).json({
@@ -118,13 +117,13 @@ export const socketAuth = async (
     next: (err?: Error) => void
 ) => {
     try {
-        const authHeader = socket.handshake.headers.authorization;
+        const token = socket.handshake.query.token as string;
 
-        if (!authHeader || !authHeader.startsWith("Bearer ")) {
-            return next(new Error("Unauthorized"));
-        }
+        // if (!token) {
+        //     return next(new Error("Unauthorized"));
+        // }
 
-        const token = authHeader.split(" ")[1];
+        // const token = authHeader.split(" ")[1];
         if (!token) {
             return next(new Error("Unauthorized: Missing token"));
         }

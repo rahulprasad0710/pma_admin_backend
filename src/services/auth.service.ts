@@ -64,7 +64,9 @@ const loginWithCredentials = async (email: string, password: string) => {
         userType: "credentials",
         loginType: "credentials",
     });
-
+    console.log({
+        refreshToken,
+    });
     await userService.updateRefreshToken(userFromDB.id, refreshToken);
 
     return {
@@ -75,7 +77,7 @@ const loginWithCredentials = async (email: string, password: string) => {
         role: {
             ...userInfo?.role,
             permissions: userInfo?.role?.permissions?.map((item) => {
-                return item.enumName;
+                return item;
             }),
         },
 
@@ -232,7 +234,10 @@ const getUserInfo = async (userId: number) => {
         return {
             id: user.id,
             email: user.email,
-            role: role,
+            role: {
+                ...role,
+                permissions: role.permissions?.map((item) => item.enumName),
+            },
             type: "credentials",
             internalCompanies: internalCompaniesWithFeatures,
             authenticated: true,
@@ -263,7 +268,7 @@ const authenticateUser = async (userId: number, fromCache: boolean) => {
                 role: {
                     ...userFromDB?.role,
                     permissions: userFromDB?.role?.permissions?.map((item) => {
-                        return item.enumName;
+                        return item;
                     }),
                 },
                 authenticated: true,
