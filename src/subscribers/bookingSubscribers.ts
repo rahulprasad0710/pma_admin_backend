@@ -2,14 +2,21 @@ import {
     BOOKING_EMAIL,
     BOOKING_LOGS,
     BOOKING_NOTIFICATION,
+    BOOKING_TASK,
 } from "../events/bookingEvents";
 import { BookingServiceEnum, BookingStatusEnum } from "../enums/BookingEnum";
-import { IBookingResponse, IBookingResponseDetails } from "../types/payload";
+import {
+    IBookingResponse,
+    IBookingResponseDetails,
+    ITask,
+} from "../types/payload";
 
 import { ActionAction } from "../enums/enums";
 import { BookingService } from "../services/hotel/booking.service";
 import { EmailService } from "../services/config/email.service";
 import NotificationService from "../services/notification.service";
+import { Priority } from "../enums/Priority";
+import TaskService from "../services/task.service";
 import UserService from "../services/users.service";
 // subscribers/bookingSubscribers.ts
 import { eventBus } from "../events/eventBus";
@@ -159,6 +166,32 @@ eventBus.on(BOOKING_NOTIFICATION, async (booking: IBookingResponseDetails) => {
             error: JSON.stringify(err),
             retry: 0,
             serviceName: BookingServiceEnum.BOOKING_NOTIFICATION,
+            status: BookingStatusEnum.FAILED,
+        });
+    }
+});
+
+// 1. Booking Task subscriber
+eventBus.on(BOOKING_TASK, async (booking: IBookingResponseDetails) => {
+    try {
+        const taskService = new TaskService();
+        const result = await taskService.createTaskForBooking(booking);
+
+        const response = await bookingService.createBookingLog({
+            bookingId: booking.id,
+            action: ActionAction.TASK_CREATED,
+            details: JSON.stringify(result),
+            serviceName: BookingServiceEnum.BOOKING_TASK,
+        });
+
+        return response;
+    } catch (err) {
+        console.log("LOG: ~ err BOOKING_TASK:", err);
+        await bookingService.createBookingServiceFailures({
+            bookingId: booking.id,
+            error: JSON.stringify(err),
+            retry: 0,
+            serviceName: BookingServiceEnum.BOOKING_TASK,
             status: BookingStatusEnum.FAILED,
         });
     }

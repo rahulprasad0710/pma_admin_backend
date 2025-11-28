@@ -31,10 +31,11 @@ export interface ITask {
     description: string;
     addedDate: Date;
     addedBy: User;
+    addedById: number;
     assignedTo: User;
     assignedBy: User;
-    project: Project;
-    status: TaskStatusEnum;
+    project: Project | null;
+
     priority: Priority;
     taskLabel?: Label;
     taskUploads: string[];

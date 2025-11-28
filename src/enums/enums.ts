@@ -8,4 +8,5 @@ export enum ActionAction {
     EDITED = "EDITED",
     EMAIL_SENT = "EMAIL_SENT",
     NOTIFICATION_SENT = "NOTIFICATION_SENT",
+    TASK_CREATED = "TASK_CREATED",
 }

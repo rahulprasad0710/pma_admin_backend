@@ -9,6 +9,7 @@ const taskService = new TaskService();
 const activityService = new ActivityService();
 
 const create = async (req: Request, res: Response): Promise<void> => {
+    const { verifiedUser } = req;
     try {
         const data = await taskService.create({
             title: req.body.title,
@@ -17,13 +18,13 @@ const create = async (req: Request, res: Response): Promise<void> => {
             addedDate: req.body.addedDate,
             addedBy: req.verifiedUser,
             project: req.body.project,
-            status: req.body.status,
             assignedBy: req.body.assignedBy,
             assignedTo: req.body.assignTo,
             taskLabel: req.body.taskLabel,
             taskUploads: req.body.taskUploads,
             featureId: req.body.featureId,
             sprint: req.body.sprint,
+            addedById: verifiedUser,
         });
         res.status(201).json({
             success: true,
@@ -122,6 +123,7 @@ const updateStatus = async (req: Request, res: Response): Promise<void> => {
 
 const update = async (req: Request, res: Response): Promise<void> => {
     const { id } = req.params;
+    const { verifiedUser } = req;
 
     try {
         const response = await taskService.update(Number(id), {
@@ -131,7 +133,6 @@ const update = async (req: Request, res: Response): Promise<void> => {
             addedDate: req.body.addedDate,
             addedBy: req.body.addedBy,
             project: req.body.project,
-            status: req.body.status,
             assignedBy: req.body.assignedBy,
             assignedTo: req.body.assignedTo,
             taskLabel: req.body.taskLabel,
@@ -139,6 +140,7 @@ const update = async (req: Request, res: Response): Promise<void> => {
             updatedTaskUploads: req.body.updatedTaskUploads,
             featureId: req.body.featureId,
             sprint: req.body.sprint,
+            addedById: verifiedUser,
         });
         res.status(200).json({
             success: true,

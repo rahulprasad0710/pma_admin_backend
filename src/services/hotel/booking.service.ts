@@ -27,19 +27,14 @@ import roomAvailabilityService from "./roomAvailability.service";
 import { sanitizeCustomerResult } from "../../utils/sanitizeCustomer";
 
 export class BookingService {
-    constructor(
-        private readonly bookingRepository = dataSource.getRepository(Booking),
-        private readonly bookingRoomRepository = dataSource.getRepository(
-            BookingRoom
-        ),
-        private readonly bookingServiceFailuresRepository = dataSource.getRepository(
-            BookingServiceFailures
-        ),
+    private readonly bookingRepository = dataSource.getRepository(Booking);
+    private readonly bookingRoomRepository =
+        dataSource.getRepository(BookingRoom);
+    private readonly bookingServiceFailuresRepository =
+        dataSource.getRepository(BookingServiceFailures);
 
-        private readonly bookingLogsRepository = dataSource.getRepository(
-            BookingLogs
-        )
-    ) {}
+    private readonly bookingLogsRepository =
+        dataSource.getRepository(BookingLogs);
 
     async create(fullPayload: BookingFullPayload) {
         const { bookingIdemKey, ...payload } = fullPayload;

@@ -208,7 +208,7 @@ export class ProjectService {
                     "title",
                     "assignedTo",
                     "taskNumber",
-                    "status",
+                    "task_status",
                     "priority",
                 ],
                 relations: ["assignedTo"],

@@ -64,7 +64,9 @@ const loginWithCredentials = async (email: string, password: string) => {
         userType: "credentials",
         loginType: "credentials",
     });
-
+    console.log({
+        refreshToken,
+    });
     await userService.updateRefreshToken(userFromDB.id, refreshToken);
 
     return {

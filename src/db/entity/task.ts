@@ -8,10 +8,10 @@ import {
     ManyToOne,
     PrimaryGeneratedColumn,
 } from "typeorm";
-import { Priority, TaskStatusEnum } from "../../enums/Priority";
 
 import { Feature } from "./Feature";
 import { Label } from "./taskLabel";
+import { Priority } from "../../enums/Priority";
 import { Project } from "./project";
 import { Sprint } from "./sprint";
 import { TaskStatus } from "./taskStatus";
@@ -34,12 +34,18 @@ export class Task {
     @Column({ nullable: true })
     taskNumber: string;
 
+    @Column()
+    added_by_id: number;
+
     @ManyToOne(() => User, (user) => user.id, { nullable: true })
-    @JoinColumn()
+    @JoinColumn({ name: "added_by_id" })
     addedBy: User;
 
+    @Column()
+    assigned_to_id: number;
+
     @ManyToOne(() => User, (user) => user.id)
-    @JoinColumn()
+    @JoinColumn({ name: "assigned_to_id" })
     assignedTo: User;
 
     @Column()
@@ -56,25 +62,27 @@ export class Task {
     @JoinColumn()
     assignedBy: User;
 
+    @Column()
+    task_label: number;
+
     @ManyToOne(() => Label, (label) => label.id, { nullable: true })
-    @JoinColumn()
+    @JoinColumn({ name: "task_label" })
     taskLabel: Label;
 
+    @Column()
+    sprint_id: number;
+
     @ManyToOne(() => Sprint, (sprint) => sprint.id, { nullable: true })
-    @JoinColumn()
+    @JoinColumn({ name: "sprint_id" })
     sprint: Sprint;
 
-    @Column({
-        type: "enum",
-        enum: TaskStatusEnum,
-        default: TaskStatusEnum.TODO,
-    })
-    status: TaskStatus;
+    @Column()
+    task_status_id: number;
 
     @ManyToOne(() => TaskStatus, (taskStatus) => taskStatus.id, {
         nullable: true,
     })
-    @JoinColumn()
+    @JoinColumn({ name: "task_status_id" })
     task_status: TaskStatus;
 
     @Column({
@@ -90,6 +98,8 @@ export class Task {
     })
     project: Project;
 
+    @Column()
+    feature_id: number;
     @ManyToOne(() => Feature, (feature) => feature.id, { nullable: true })
     @JoinColumn({
         name: "feature_id",
