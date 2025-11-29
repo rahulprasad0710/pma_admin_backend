@@ -14,17 +14,17 @@ jobs:
       - name: Login to docker hub
         run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
       - name: Build Docker Image
-        run: docker build -t rahulshah10/pma_admin_backend  .
+        run: docker build -t rahulshah10/pma_admin_backend_app_2026  .
       - name: Publish Image to docker hub
-        run: docker push rahulshah10/pma_admin_backend:latest
+        run: docker push rahulshah10/pma_admin_backend_app_2026:latest
 
   deploy:
     needs: build
     runs-on: self-hosted
     steps:
       - name: Delete old container
-        run: docker rm -f pma_admin_backend-container
+        run: docker rm -f pma_admin_backend_app_2026-container
       - name: Pull image from docker hub
-        run: docker pull rahulshah10/pma_admin_backend:latest
+        run: docker pull rahulshah10/pma_admin_backend_app_2026:latest
       - name: Run Docker Container
-        run: docker run -d -p 8000:8000 --memory="512m" --cpus="0.5" --network host  --name pma_admin_backend-container  --env-file /home/ubuntu/pma_admin_backend_app/.env rahulshah10/pma_admin_backend:latest
+        run: docker run -d -p 8000:8000 --memory="512m" --cpus="0.5" --network host  --name pma_admin_backend_app_2026-container  --env-file /home/ubuntu/pma_admin_backend_app/.env rahulshah10/pma_admin_backend_app_2026:latest
