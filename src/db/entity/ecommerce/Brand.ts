@@ -16,7 +16,7 @@ import { Product } from "./Product";
 import { UploadFile } from "../uploads";
 
 @Entity({
-    name: "brands",
+    name: "ecommerce_brands",
 })
 export class Brands {
     @PrimaryGeneratedColumn()
@@ -38,11 +38,13 @@ export class Brands {
     @Column({ type: "text" })
     description: string;
 
-    @Column({ nullable: true })
-    thumbnail_url: UploadFile;
+    @ManyToOne(() => UploadFile, { nullable: true })
+    @JoinColumn({ name: "thumbnail_id" })
+    thumbnail: UploadFile;
 
-    @Column({ nullable: true })
-    cover_pic_url: UploadFile;
+    @ManyToOne(() => UploadFile, { nullable: true })
+    @JoinColumn({ name: "cover_pic_id" })
+    cover_pic: UploadFile;
 
     @Column({ default: 0 })
     display_order: number;

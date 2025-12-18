@@ -16,7 +16,7 @@ import { Product } from "./Product";
 import { UploadFile } from "../uploads";
 
 @Entity({
-    name: "subcategories",
+    name: "ecommerce_subcategories",
 })
 export class SubCategories {
     @PrimaryGeneratedColumn()
@@ -35,23 +35,25 @@ export class SubCategories {
     @Column({ nullable: false })
     slug: string;
 
+    @Column({ nullable: false })
+    url: string;
+
     @Column({ type: "text" })
     description: string;
 
-    @Column({ nullable: true })
-    thumbnail_url: UploadFile;
+    @ManyToOne(() => UploadFile, { nullable: true })
+    @JoinColumn({ name: "thumbnail_id" })
+    thumbnail: UploadFile;
 
-    @Column({ nullable: true })
-    cover_pic_url: UploadFile;
+    @ManyToOne(() => UploadFile, { nullable: true })
+    @JoinColumn({ name: "cover_pic_id" })
+    cover_pic: UploadFile;
 
     @Column({ default: 0 })
     display_order: number;
 
     @Column({ default: 1 })
     is_active: number;
-
-    @Column({ type: "jsonb", default: "{}" })
-    attributes: object;
 
     @OneToMany(() => Product, (product) => product.subcategory)
     products: Product[];

@@ -12,9 +12,9 @@ import {
 import { ProductAttribute } from "./Attribute";
 import { UploadFile } from "../uploads";
 
-@Entity({ name: "attribute_values" })
-@Unique("uq_attribute_value", ["attribute", "value"])
-@Index("idx_attribute_values_attribute", ["attribute"])
+@Entity({ name: "ecommerce_attribute_values" })
+@Unique("uq_ecommerce_attribute_value", ["attribute", "value"])
+@Index("idx_ecommerce_attribute_values_attribute", ["attribute"])
 export class AttributeValue {
     @PrimaryGeneratedColumn()
     id: number;
@@ -35,7 +35,8 @@ export class AttributeValue {
     @Column({ length: 7, nullable: true })
     color_hex: string; // #FF0000
 
-    @Column({ length: 500, nullable: true })
+    @ManyToOne(() => UploadFile, { nullable: true })
+    @JoinColumn({ name: "image_url_id" })
     image_url: UploadFile;
 
     @Column({ default: 0 })

@@ -18,7 +18,7 @@ export enum InventoryStatus {
     RESERVED = "reserved",
 }
 
-@Entity({ name: "product_variant_inventory" })
+@Entity({ name: "ecommerce_product_variant_inventory" })
 export class ProductVariantInventory {
     @PrimaryGeneratedColumn()
     id: number;
@@ -47,7 +47,7 @@ export class ProductVariantInventory {
     is_in_stock: boolean;
 }
 
-@Entity({ name: "inventory_locations" })
+@Entity({ name: "ecommerce_inventory_locations" })
 export class InventoryLocation {
     @PrimaryGeneratedColumn()
     id: number;
@@ -59,8 +59,7 @@ export class InventoryLocation {
     name: string;
 }
 
-@Entity({ name: "product_variant_inventory_details" })
-@Unique(["variant", "location", "status"])
+@Entity({ name: "ecommerce_product_variant_inventory_details" })
 export class ProductVariantInventoryDetails {
     @PrimaryGeneratedColumn()
     id: number;
@@ -88,7 +87,7 @@ export class ProductVariantInventoryDetails {
     quantity: number;
 }
 
-@Entity({ name: "inventory_movements" })
+@Entity({ name: "ecommerce_inventory_movements" })
 export class InventoryMovement {
     @PrimaryGeneratedColumn()
     id: number;

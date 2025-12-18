@@ -12,10 +12,12 @@ const dataSource = new DataSource({
     password: APP_CONSTANT.DB_PASSWORD,
     database: APP_CONSTANT.DB_NAME,
     // synchronize: true,
-    synchronize: APP_CONSTANT.NODE_ENV === "development" ? true : false,
+    // synchronize: APP_CONSTANT.NODE_ENV === "development" ? true : false,
+    synchronize: true,
+
     //
     // Synchronize is true for development only
-    logging: false,
+    // logging: true,
     entities: entities,
     migrations: [],
     subscribers: [],

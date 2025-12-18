@@ -2,15 +2,6 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-// const env = process.env.NODE_ENV || "development";
-// if (env === "development") {
-//     dotenv.config({ path: ".env.local" });
-// } else if (env === "production") {
-//     dotenv.config({ path: ".env.production" });
-// } else if (env === "test") {
-//     dotenv.config({ path: ".env.test" });
-// }
-
 const APP_CONSTANT = {
     PORT: process.env.PORT || 3000,
     REDIS_URL: process.env.REDIS_URL,

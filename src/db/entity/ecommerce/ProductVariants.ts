@@ -11,9 +11,9 @@ import {
 
 import { Product } from "./Product";
 
-@Entity({ name: "product_variants" })
-@Index("idx_variants_product", ["product"])
-@Index("idx_variants_active", ["is_active"])
+@Entity({ name: "ecommerce_product_variants" })
+@Index("idx_ecommerce_product_variants_product", ["product"])
+@Index("idx_ecommerce_product_variants_active", ["is_active"])
 export class ProductVariant {
     @PrimaryGeneratedColumn()
     id: number;
