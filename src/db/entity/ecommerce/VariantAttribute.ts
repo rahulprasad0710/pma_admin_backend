@@ -12,10 +12,10 @@ import { AttributeValue } from "./AttributeValue";
 import { ProductAttribute } from "./Attribute";
 import { ProductVariant } from "./ProductVariants";
 
-@Entity({ name: "variant_attributes" })
-@Unique("uq_variant_attribute", ["variant", "attribute"])
-@Index("idx_variant_attrs_variant", ["variant"])
-@Index("idx_variant_attrs_value", ["attribute_value"])
+@Entity({ name: "ecommerce_variant_attributes" })
+@Unique("uq_ecommerce_variant_attribute", ["variant", "attribute"])
+@Index("idx_ecommerce_variant_attrs_variant", ["variant"])
+@Index("idx_ecommerce_variant_attrs_value", ["attribute_value"])
 export class VariantAttribute {
     @PrimaryGeneratedColumn()
     id: number;

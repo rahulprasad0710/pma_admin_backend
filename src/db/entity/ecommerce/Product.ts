@@ -19,12 +19,12 @@ import { SubCategories } from "./SubCategories";
 import { UploadFile } from "../uploads";
 
 @Entity({
-    name: "products",
+    name: "ecommerce_products",
 })
-@Index("idx_products_category", ["category"])
-@Index("idx_products_brand", ["brand"])
-@Index("idx_products_active", ["is_active"])
-@Index("idx_products_name", ["name"])
+@Index("idx_ecommerce_products_category", ["category"])
+@Index("idx_ecommerce_products_brand", ["brand"])
+@Index("idx_ecommerce_products_active", ["is_active"])
+@Index("idx_ecommerce_products_name", ["name"])
 export class Product {
     @PrimaryGeneratedColumn()
     id: number;
@@ -34,6 +34,9 @@ export class Product {
 
     @Column({ nullable: false })
     title: string;
+
+    @Column({ nullable: false })
+    name: string;
 
     @Column({ nullable: false })
     slug: string;
@@ -62,14 +65,17 @@ export class Product {
     @JoinColumn({ name: "brand_id" })
     brand: Brands;
 
-    @Column({ nullable: true })
-    thumbnail_url: UploadFile;
+    @ManyToOne(() => UploadFile, { nullable: true })
+    @JoinColumn({ name: "thumbnail_id" })
+    thumbnail: UploadFile;
 
-    @Column({ nullable: true })
-    main_pic_url: UploadFile;
+    @ManyToOne(() => UploadFile, { nullable: true })
+    @JoinColumn({ name: "cover_pic_id" })
+    cover_pic: UploadFile;
 
-    @Column({ nullable: true })
-    cover_pic_url: UploadFile;
+    @ManyToOne(() => UploadFile, { nullable: true })
+    @JoinColumn({ name: "main_pic" })
+    main_pic: UploadFile;
 
     @Column({ default: 0 })
     is_featured: number;

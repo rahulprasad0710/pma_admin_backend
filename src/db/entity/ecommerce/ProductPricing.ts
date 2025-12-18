@@ -17,19 +17,19 @@ enum PriceType {
     MEMBER = "member",
 }
 
-@Entity({ name: "variant_prices" })
+@Entity({ name: "ecommerce_product_variant_prices" })
 @Check(`"price" >= 0`)
 @Check(`"mrp_price" IS NULL OR "mrp_price" >= 0`)
 @Check(`"cost_price" IS NULL OR "cost_price" >= 0`)
 // Performance indexes
-@Index("idx_prices_variant", ["variant"])
-@Index("idx_prices_active", ["is_active"])
+@Index("idx_ecommerce_prices_variant", ["variant"])
+@Index("idx_ecommerce_prices_active", ["is_active"])
 // Partial unique index (PostgreSQL only)
-@Index("uq_active_price_per_type", ["variant", "price_type"], {
+@Index("uq_ecommerce_active_price_per_type", ["variant", "price_type"], {
     unique: true,
     where: `"is_active" = true`,
 })
-export class VariantPrice {
+export class ProductVariantPrice {
     @PrimaryGeneratedColumn()
     id: number;
 
@@ -41,7 +41,6 @@ export class VariantPrice {
     variant: ProductVariant;
 
     @Column({
-        length: 50,
         enum: PriceType,
         type: "enum",
         default: PriceType.REGULAR,

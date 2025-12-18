@@ -43,7 +43,7 @@ export class AdminAudit {
         type: "varchar",
         length: 20,
     })
-    status: "SUCCESS" | "ERROR" | "WARNING" | "FATAL" | "APP_ERROR";
+    status: "SUCCESS" | "ERROR" | "WARNING" | "FATAL";
 
     @CreateDateColumn({ type: "timestamp" })
     createdAt: Date;

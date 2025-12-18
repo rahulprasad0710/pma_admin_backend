@@ -12,7 +12,7 @@ import { Product } from "./Product";
 import { ProductVariant } from "./ProductVariants";
 import { UploadFile } from "../uploads";
 
-@Entity("product_uploads")
+@Entity("ecommerce_product_uploads")
 export class ProductUpload {
     @PrimaryGeneratedColumn()
     id: number;

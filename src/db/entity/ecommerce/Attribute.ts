@@ -16,7 +16,7 @@ enum AttributeType {
     IMAGE,
 }
 
-@Entity({ name: "product_attributes" })
+@Entity({ name: "ecommerce_product_attributes" })
 export class ProductAttribute {
     @PrimaryGeneratedColumn()
     id: number;
