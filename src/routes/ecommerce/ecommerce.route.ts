@@ -1,5 +1,6 @@
 import { Router as ExpressRouter } from "express";
 import productRoute from "./products.route";
+import productSettingsRoute from "./product-settings.route";
 
 export type Route = {
     path: string;
@@ -12,6 +13,10 @@ const routes = [
     {
         path: "/products",
         route: productRoute,
+    },
+    {
+        path: "/product-settings",
+        route: productSettingsRoute,
     },
 ];
 

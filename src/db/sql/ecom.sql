@@ -400,3 +400,34 @@ $$ LANGUAGE plpgsql;
 
 
 
+CREATE TABLE wishlist (
+    id SERIAL PRIMARY KEY,
+    user_id INT REFERENCES users(id),
+    product_variant_id INT REFERENCES product_variants(id),
+    product_id INT REFERENCES products(id),
+    added_at TIMESTAMP DEFAULT NOW(),
+    UNIQUE(user_id, product_variant_id)
+);
+
+CREATE TABLE cart_items (
+    id SERIAL PRIMARY KEY,
+    user_id INT REFERENCES users(id),
+    session_id VARCHAR(100) DEFAULT NULL, -- For non-logged in users
+    product_id INT REFERENCES products(id),
+    product_variant_id INT REFERENCES product_variants(id),
+    quantity INT DEFAULT 1,
+    added_at TIMESTAMP DEFAULT NOW(),
+    updated_at TIMESTAMP DEFAULT NOW()
+);
+
+
+CREATE TABLE product_clicks (
+    id SERIAL PRIMARY KEY,
+    product_id INT REFERENCES products(id),
+    product_variant_id INT REFERENCES product_variants(id),
+    user_id INT REFERENCES users(id),
+    session_id VARCHAR(100) DEFAULT NULL,
+    clicked_at TIMESTAMP DEFAULT NOW(),
+    referrer VARCHAR(500),
+    device_type VARCHAR(50)
+);

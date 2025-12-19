@@ -19,12 +19,6 @@ type TGetAllProductsParams = {
 export class ProductService {
     private readonly productRepository = dataSource.getRepository(Product);
 
-    // async create(productData: IMainProduct): Promise<Product> {
-    //     const product = this.productRepository.create(productData);
-    //     const result = await this.productRepository.save(product);
-    //     return result;
-    // }
-
     async getAll({
         isActive,
         isPaginationEnabled,

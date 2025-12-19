@@ -13,8 +13,8 @@ import { ProductAttribute } from "./Attribute";
 import { ProductVariant } from "./ProductVariants";
 
 @Entity({ name: "ecommerce_variant_attributes" })
-@Unique("uq_ecommerce_variant_attribute", ["variant", "attribute"])
-@Index("idx_ecommerce_variant_attrs_variant", ["variant"])
+@Unique("uq_ecommerce_variant_attribute", ["product_variant", "attribute"])
+@Index("idx_ecommerce_variant_attrs_variant", ["product_variant"])
 @Index("idx_ecommerce_variant_attrs_value", ["attribute_value"])
 export class VariantAttribute {
     @PrimaryGeneratedColumn()
@@ -24,8 +24,8 @@ export class VariantAttribute {
         nullable: false,
         onDelete: "CASCADE",
     })
-    @JoinColumn({ name: "variant_id" })
-    variant: ProductVariant;
+    @JoinColumn({ name: "product_variant_id" })
+    product_variant: ProductVariant;
 
     @ManyToOne(() => ProductAttribute, {
         nullable: false,

@@ -19,6 +19,8 @@ export class AttributeValue {
     @PrimaryGeneratedColumn()
     id: number;
 
+    @Column()
+    product_attribute_id: number;
     @ManyToOne(() => ProductAttribute, (attribute) => attribute.values, {
         nullable: false,
         onDelete: "CASCADE",

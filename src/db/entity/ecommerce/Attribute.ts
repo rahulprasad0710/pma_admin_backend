@@ -9,11 +9,11 @@ import {
 
 import { AttributeValue } from "./AttributeValue";
 
-enum AttributeType {
-    TEXT,
-    NUMBER,
-    COLOR,
-    IMAGE,
+export enum AttributeType {
+    TEXT = "TEXT",
+    NUMBER = "NUMBER",
+    COLOR = "COLOR",
+    IMAGE = "IMAGE",
 }
 
 @Entity({ name: "ecommerce_product_attributes" })
