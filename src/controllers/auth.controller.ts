@@ -5,6 +5,12 @@ import authService from "../services/auth.service";
 const login = async (req: Request, res: Response): Promise<void> => {
     const { email, password, isRememberMe } = req.body;
 
+    console.log({
+        email,
+        password,
+        isRememberMe,
+    });
+
     const { refreshToken, ...rest } = await authService.loginWithCredentials(
         email,
         password

@@ -18,7 +18,7 @@ const loginWithCredentials = async (email: string, password: string) => {
     const userFromDB = await userService.getByEmail(email);
 
     if (!userFromDB) {
-        throw new AppError("User not found", 401, ErrorType.NOT_FOUND_ERROR);
+        throw new AppError("Invalid Credentials", 401, ErrorType.AUTH_ERROR);
     }
 
     const isPasswordCorrect = await checkPassword(
@@ -53,6 +53,9 @@ const loginWithCredentials = async (email: string, password: string) => {
     RedisService.setValue(`user:${userFromDB?.id}`, {
         id: userFromDB?.id,
         email: userFromDB?.email,
+        firstName: userFromDB.firstName,
+        lastName: userFromDB.lastName,
+        profilePictureUrl: userFromDB.profilePictureUrl,
         type: "credentials",
         internalCompanies: userInfo?.internalCompanies,
         role: userInfo?.role,
@@ -72,6 +75,9 @@ const loginWithCredentials = async (email: string, password: string) => {
     return {
         id: userFromDB?.id,
         email: userFromDB?.email,
+        firstName: userFromDB.firstName,
+        lastName: userFromDB.lastName,
+        profilePictureUrl: userFromDB.profilePictureUrl,
         type: "credentials",
         internalCompanies: userInfo?.internalCompanies,
         role: {
@@ -194,6 +200,7 @@ const refreshUser = async (refreshToken: string) => {
     }
 };
 
+// for /auth/me
 const getUserInfo = async (userId: number) => {
     const user = await userService.getById(userId);
 
@@ -206,10 +213,6 @@ const getUserInfo = async (userId: number) => {
                 userId: user.id,
                 populateInternalCompany: true,
             });
-
-        console.log({
-            internalCompanyList,
-        });
 
         const internalCompaniesWithFeatures: TInternalCompany[] =
             await Promise.all(
@@ -234,6 +237,9 @@ const getUserInfo = async (userId: number) => {
         return {
             id: user.id,
             email: user.email,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            profilePictureUrl: user.profilePictureUrl,
             role: {
                 ...role,
                 permissions: role.permissions?.map((item) => item.enumName),
@@ -263,6 +269,9 @@ const authenticateUser = async (userId: number, fromCache: boolean) => {
             const redisPayload = {
                 id: userFromDB?.id,
                 email: userFromDB?.email,
+                firstName: userFromDB.firstName,
+                lastName: userFromDB.lastName,
+                profilePictureUrl: userFromDB.profilePictureUrl,
                 type: "credentials",
                 internalCompanies: userFromDB?.internalCompanies,
                 role: {
