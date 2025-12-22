@@ -5,24 +5,19 @@ import authService from "../services/auth.service";
 const login = async (req: Request, res: Response): Promise<void> => {
     const { email, password, isRememberMe } = req.body;
 
-    console.log({
-        email,
-        password,
-        isRememberMe,
-    });
-
     const { refreshToken, ...rest } = await authService.loginWithCredentials(
         email,
-        password
+        password,
+        isRememberMe
     );
 
-    const refreshTokenProvided = isRememberMe ? refreshToken : null;
-
-    res.cookie("refreshToken", refreshTokenProvided, {
+    res.cookie("refreshToken", refreshToken, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
         sameSite: "strict",
-        maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+        maxAge: isRememberMe
+            ? 30 * 24 * 60 * 60 * 1000 // 30 days
+            : 60 * 60 * 1000, //1 hr
     })
         .status(200)
         .json({
@@ -64,42 +59,44 @@ const verifyEmailAndSetPassword = async (req: Request, res: Response) => {
 };
 
 const refreshUser = async (req: Request, res: Response) => {
-    const incomingRefreshToken = req?.cookies?.refreshToken;
+    const { verifiedUserId, verifiedUser } = req;
 
-    if (!incomingRefreshToken) {
-        res.status(401).json({
-            success: false,
-            data: null,
-            message: "No refresh token provided",
-        });
-        return;
-    }
+    const isRememberMe = verifiedUser?.is_remember_me;
 
-    const { refreshToken, ...rest } = await authService.refreshUser(
-        incomingRefreshToken
+    const { refreshToken, accessToken } = await authService.refreshUser(
+        verifiedUserId,
+        isRememberMe
     );
 
     res.cookie("refreshToken", refreshToken, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
         sameSite: "strict",
-        maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+        maxAge: isRememberMe
+            ? 30 * 24 * 60 * 60 * 1000 // 30 days
+            : 60 * 60 * 1000, //1 hr
     })
         .status(200)
         .json({
             success: true,
-            data: rest,
-            message: "refresh token successful",
+            data: {
+                ...verifiedUser,
+                accessToken,
+            },
+            message: "refresh token successful.",
         });
 };
 
-const authenticateMe = async (req: Request, res: Response) => {
-    const { verifiedUserId } = req;
-    const response = await authService.authenticateUser(verifiedUserId, true);
+const authenticateUser = async (req: Request, res: Response) => {
+    const { verifiedUserId, verifiedUser } = req;
+    const accessToken = await authService.authenticateMe(verifiedUserId);
 
     res.status(200).json({
         success: true,
-        data: response,
+        data: {
+            ...verifiedUser,
+            accessToken,
+        },
         message: "User authenticated successfully",
     });
 };
@@ -108,6 +105,6 @@ export default {
     login,
     verifyEmailAndSetPassword,
     logout,
-    authenticateMe,
+    authenticateUser,
     refreshUser,
 };

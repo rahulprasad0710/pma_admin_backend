@@ -8,23 +8,35 @@ type Token = {
     loginType: string;
 };
 
+type TRefreshToken = {
+    userId: number;
+    userType: string;
+    loginType: string;
+    isRememberMe: boolean;
+};
+
 const accessToken = ({ userId, userType, loginType }: Token) => {
     const token = jwt.sign(
         { id: userId, userType, loginType },
         APP_CONSTANT.JWT_ACCESS_SECRET as string,
         {
-            expiresIn: "1h",
+            expiresIn: "15m",
         }
     );
     return token;
 };
 
-const refreshToken = ({ userId, userType, loginType }: Token) => {
+const refreshToken = ({
+    userId,
+    userType,
+    loginType,
+    isRememberMe,
+}: TRefreshToken) => {
     const token = jwt.sign(
-        { id: userId, userType, loginType },
+        { id: userId, userType, loginType, isRememberMe },
         APP_CONSTANT.JWT_REFRESH_SECRET as string,
         {
-            expiresIn: "7d",
+            expiresIn: isRememberMe ? "30d" : "1d",
         }
     );
     return token;

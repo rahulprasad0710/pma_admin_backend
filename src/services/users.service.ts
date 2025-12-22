@@ -15,7 +15,6 @@ import crypto from "crypto";
 import dataSource from "../db/data-source";
 import generateToken from "../utils/generateToken";
 import { sanitizeDBResult } from "../utils/sanitizeDbResult";
-import { sendEmail } from "../config/email.config";
 
 const emailService = new EmailService();
 
@@ -139,6 +138,7 @@ export class UserService {
                     userId: response?.id,
                     userType: "credentials",
                     loginType: "credentials",
+                    isRememberMe: false,
                 });
                 await this.updateRefreshToken(response.id, refreshToken);
             }
@@ -363,9 +363,14 @@ export class UserService {
         return response;
     }
 
-    async updateRefreshToken(userId: number, refreshToken?: string) {
+    async updateRefreshToken(
+        userId: number,
+        refreshToken?: string,
+        isRememberMe?: boolean
+    ) {
         const response = await this.userRepository.update(userId, {
             refreshToken: refreshToken ? refreshToken : () => "NULL",
+            is_remember_me: isRememberMe ? isRememberMe : false,
         });
         return response;
     }
