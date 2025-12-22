@@ -14,7 +14,11 @@ const userService = new UserService();
 const roleService = new RoleService();
 
 // ! # USER LOGGING IN WITH CREDENTIALS
-const loginWithCredentials = async (email: string, password: string) => {
+const loginWithCredentials = async (
+    email: string,
+    password: string,
+    isRememberMe: boolean
+) => {
     const userFromDB = await userService.getByEmail(email);
 
     if (!userFromDB) {
@@ -35,11 +39,11 @@ const loginWithCredentials = async (email: string, password: string) => {
     }
 
     if (!userFromDB.emailVerified) {
-        throw new AppError("Email not verified", 401, ErrorType.AUTH_ERROR);
+        throw new AppError("Email not verified.", 401, ErrorType.AUTH_ERROR);
     }
 
     if (!userFromDB.isActive) {
-        throw new AppError("User not active", 401, ErrorType.AUTH_ERROR);
+        throw new AppError("User Deactivated.", 401, ErrorType.AUTH_ERROR);
     }
 
     const accessToken = generateToken.accessToken({
@@ -49,6 +53,14 @@ const loginWithCredentials = async (email: string, password: string) => {
     });
 
     const userInfo = await getUserInfo(userFromDB?.id);
+    const refreshToken = generateToken.refreshToken({
+        userId: userFromDB?.id,
+        userType: "credentials",
+        loginType: "credentials",
+        isRememberMe,
+    });
+
+    await userService.updateRefreshToken(userFromDB.id, refreshToken);
 
     RedisService.setValue(`user:${userFromDB?.id}`, {
         id: userFromDB?.id,
@@ -60,17 +72,9 @@ const loginWithCredentials = async (email: string, password: string) => {
         internalCompanies: userInfo?.internalCompanies,
         role: userInfo?.role,
         authenticated: true,
-    });
-
-    const refreshToken = generateToken.refreshToken({
-        userId: userFromDB?.id,
-        userType: "credentials",
-        loginType: "credentials",
-    });
-    console.log({
         refreshToken,
+        isRememberMe: userFromDB?.is_remember_me,
     });
-    await userService.updateRefreshToken(userFromDB.id, refreshToken);
 
     return {
         id: userFromDB?.id,
@@ -86,7 +90,7 @@ const loginWithCredentials = async (email: string, password: string) => {
                 return item;
             }),
         },
-
+        isRememberMe,
         accessToken,
         refreshToken,
         authenticated: true,
@@ -145,62 +149,6 @@ const verifyEmailAndSetPassword = async ({
     };
 };
 
-const refreshUser = async (refreshToken: string) => {
-    const decoded = jwt.verify(
-        refreshToken as string,
-        APP_CONSTANT.JWT_REFRESH_SECRET as string
-    );
-    if (!decoded) {
-        throw new AppError("Invalid token", 401, ErrorType.INVALID_TOKEN_ERROR);
-    }
-
-    if (typeof decoded === "object" && "id" in decoded) {
-        // const userFromDB = await userService.getById(Number(decoded.id));
-        const userFromDB = await authenticateUser(Number(decoded.id), false);
-        if (!userFromDB) {
-            throw new AppError(
-                "User not found",
-                401,
-                ErrorType.NOT_FOUND_ERROR
-            );
-        }
-
-        const accessToken = generateToken.accessToken({
-            userId: userFromDB?.id,
-            userType: "credentials",
-            loginType: "credentials",
-        });
-
-        const refreshToken = generateToken.refreshToken({
-            userId: userFromDB?.id,
-            userType: "credentials",
-            loginType: "credentials",
-        });
-
-        await userService.updateRefreshToken(userFromDB.id, refreshToken);
-
-        return {
-            id: userFromDB?.id,
-            email: userFromDB?.email,
-            type: "credentials",
-            internalCompanies: userFromDB?.internalCompanies,
-            role: {
-                ...userFromDB?.role,
-                permissions: userFromDB?.role?.permissions?.map((item) => {
-                    return item;
-                }),
-            },
-
-            accessToken,
-            refreshToken,
-            authenticated: true,
-        };
-    } else {
-        throw new AppError("Invalid token", 401, ErrorType.INVALID_TOKEN_ERROR);
-    }
-};
-
-// for /auth/me
 const getUserInfo = async (userId: number) => {
     const user = await userService.getById(userId);
 
@@ -251,14 +199,18 @@ const getUserInfo = async (userId: number) => {
     }
 };
 
+// used For authentication middleware
 const authenticateUser = async (userId: number, fromCache: boolean) => {
     let result = null;
+
     if (fromCache) {
         result = await RedisService.getValue<IUserInfo>(`user:${userId}`);
     }
 
     if (result) {
-        return result;
+        return {
+            ...result,
+        };
     }
 
     if (!result) {
@@ -293,10 +245,41 @@ const authenticateUser = async (userId: number, fromCache: boolean) => {
     }
 };
 
+const authenticateMe = async (userId: number) => {
+    const accessToken = generateToken.accessToken({
+        userId: userId,
+        userType: "credentials",
+        loginType: "credentials",
+    });
+    return accessToken;
+};
+
+// /refresh-token
+const refreshUser = async (userId: number, isRememberMe: boolean) => {
+    const refreshToken = generateToken.refreshToken({
+        userId: userId,
+        userType: "credentials",
+        loginType: "credentials",
+        isRememberMe: isRememberMe,
+    });
+    const accessToken = generateToken.accessToken({
+        userId: userId,
+        userType: "credentials",
+        loginType: "credentials",
+    });
+
+    await userService.updateRefreshToken(userId, refreshToken);
+    return {
+        refreshToken,
+        accessToken,
+    };
+};
+
 export default {
     loginWithCredentials,
     verifyEmailAndSetPassword,
     logout,
     refreshUser,
     authenticateUser,
+    authenticateMe,
 };
