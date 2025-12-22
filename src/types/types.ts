@@ -19,6 +19,9 @@ export interface IUserInfo {
     id: number;
     email: string;
     type: string;
+    firstName: string;
+    lastName: string;
+    profilePictureUrl: string | null;
     internalCompanies: TInternalCompany[];
     role: IRoleInfo;
 }
