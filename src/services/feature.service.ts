@@ -10,7 +10,6 @@ import { User } from "../db/entity/User";
 import createPagination from "../utils/createPagination";
 import dataSource from "../db/data-source";
 import { sanitizeEmployeeResult } from "../utils/sanitizeCustomer";
-import { taskStatus } from "./../../../client/src/db/schema";
 
 const uploadService = new UploadService();
 

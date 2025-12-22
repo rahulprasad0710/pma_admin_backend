@@ -30,6 +30,7 @@ app.use(
             "http://localhost:5173",
             "http://localhost:3000",
             "https://workcentrik.publicvm.com",
+            "http://3.109.201.51",
         ],
         credentials: true,
     })

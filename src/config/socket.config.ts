@@ -29,6 +29,7 @@ export function socketConnect(httpServer: import("http").Server) {
             origin: [
                 "https://workcentrik.publicvm.com",
                 "http://localhost:5173",
+                "http://3.109.201.51",
             ],
 
             methods: ["GET", "POST"],
