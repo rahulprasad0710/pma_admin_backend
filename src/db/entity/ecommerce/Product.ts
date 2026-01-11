@@ -88,4 +88,11 @@ export class Product {
 
     @OneToMany(() => ProductVariant, (variant) => variant.product)
     variants: ProductVariant[];
+
+    @Column({
+        type: "text",
+        array: true,
+        default: () => "'{}'",
+    })
+    search_keywords: string[];
 }

@@ -3,7 +3,7 @@ import {
     CreateProductAttributeSchema,
 } from "../../validator/ecommerce/product.validation";
 
-import { ProductAttributeController } from "../../controllers/ecommerce/product/productAttribute.controller";
+import { ProductAttributeController } from "../../controllers/product/productAttribute.controller";
 import applyPagination from "../../middlewares/applyPagination";
 import asyncTryCatchFn from "../../utils/asyncTryCatchFn";
 import express from "express";

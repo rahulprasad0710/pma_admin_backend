@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 
-import { ProductAttributeService } from "../../../services/ecommerce/products/productAttribute.service";
+import { ProductAttributeService } from "../../services/products/productAttribute.service";
 
 const attributeService = new ProductAttributeService();
 

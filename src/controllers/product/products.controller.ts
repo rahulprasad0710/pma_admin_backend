@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 
 import { IPagination } from "../../types/express";
-import { ProductService } from "../../services/ecommerce/product.service";
+import { ProductService } from "../../services/products/product.service";
 
 const productService = new ProductService();
 
@@ -24,6 +24,7 @@ export class ProductController {
             message: "Product fetched successfully",
         });
     }
+
     async getProductDetailsForCustomer(req: Request, res: Response) {
         const { isActive } = req.query;
         const { skip, take, keyword, isPaginationEnabled }: IPagination =

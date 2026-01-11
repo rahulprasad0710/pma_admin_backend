@@ -1,6 +1,6 @@
-import { AttributeValue } from "../../../db/entity/ecommerce/AttributeValue";
-import { ProductAttribute } from "../../../db/entity/ecommerce/Attribute";
-import dataSource from "../../../db/data-source";
+import { AttributeValue } from "../../db/entity/ecommerce/AttributeValue";
+import { ProductAttribute } from "../../db/entity/ecommerce/Attribute";
+import dataSource from "../../db/data-source";
 
 type TCreateAttributePayload = {
     name: string;

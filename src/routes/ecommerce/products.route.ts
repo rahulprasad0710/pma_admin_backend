@@ -1,4 +1,4 @@
-import { ProductController } from "../../controllers/ecommerce/products.controller";
+import { ProductController } from "../../controllers/product/products.controller";
 import applyPagination from "../../middlewares/applyPagination";
 import asyncTryCatchFn from "../../utils/asyncTryCatchFn";
 import express from "express";
