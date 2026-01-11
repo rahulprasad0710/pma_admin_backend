@@ -1,0 +1,29 @@
+// !POST _bulk
+{ "index": { "_index": "products", "_id": "29" } }
+{ "productId": 29, "title": "Handcrafted Wooden Wall Art", "brand": "Generic", "short_description": "Beautiful geometric wall art made from premium plywood, perfect for modern interiors.", "search_keywords": ["wooden wall art","wall art","geometric wall art","wood wall decor","plywood wall art","modern wall decor"] }
+{ "index": { "_index": "products", "_id": "30" } }
+{ "productId": 30, "title": "Plywood Floating Shelves", "brand": "Generic", "short_description": "Set of 3 floating shelves made from high-quality plywood, easy to install.", "search_keywords": ["floating shelves","wall shelves","wooden shelves","plywood shelves","storage shelves","home decor shelves"] }
+{ "index": { "_index": "products", "_id": "31" } }
+{ "productId": 31, "title": "Minimalist Plywood Clock", "brand": "Generic", "short_description": "Minimalist design wall clock crafted from fine plywood with silent movement.", "search_keywords": ["wall clock","minimalist clock","wooden clock","plywood clock","silent wall clock","modern wall clock"] }
+{ "index": { "_index": "products", "_id": "32" } }
+{ "productId": 32, "title": "Plywood Photo Frames Set", "brand": "Generic", "short_description": "Set of 5 assorted size photo frames made from sustainable plywood.", "search_keywords": ["photo frames","picture frames","wooden photo frames","plywood frames","wall photo frames","photo frame set"] }
+{ "index": { "_index": "products", "_id": "33" } }
+{ "productId": 33, "title": "Plywood Jewelry Box", "brand": "Generic", "short_description": "Handcrafted jewelry box with multiple compartments and velvet lining.", "search_keywords": ["jewelry box","jewellery box","jewelry organizer","wooden jewelry box","plywood jewelry box"] }
+{ "index": { "_index": "products", "_id": "34" } }
+{ "productId": 34, "title": "Ceramic Flower Pot - Small", "brand": "Generic", "short_description": "Beautiful ceramic plant pot for indoor plants, includes drainage hole.", "search_keywords": ["flower pot","ceramic pot","ceramic flower pot","plant pot","indoor plant pot","small flower pot","flowr pot"] }
+{ "index": { "_index": "products", "_id": "35" } }
+{ "productId": 35, "title": "Macrame Plant Hanger", "brand": "Generic", "short_description": "Handwoven macrame plant hanger with wooden beads, perfect for hanging plants.", "search_keywords": ["macrame plant hanger","plant hanger","hanging plant holder","macrame hanger","indoor plant hanger"] }
+{ "index": { "_index": "products", "_id": "36" } }
+{ "productId": 36, "title": "Terracotta Pots Set of 6", "brand": "Generic", "short_description": "Set of 6 unglazed terracotta pots in assorted sizes for garden plants.", "search_keywords": ["terracotta pot","terracotta pots","clay pots","garden pots","plant pots"] }
+{ "index": { "_index": "products", "_id": "37" } }
+{ "productId": 37, "title": "Self-Watering Planter", "brand": "Generic", "short_description": "Modern self-watering planter with water level indicator for busy plant lovers.", "search_keywords": ["self watering planter","self watering pot","plant pot","indoor planter","modern planter"] }
+{ "index": { "_index": "products", "_id": "38" } }
+{ "productId": 38, "title": "Ceramic Pot with Pattern", "brand": "Generic", "short_description": "Ornate ceramic pot with hand-painted patterns, perfect for home decor.", "search_keywords": ["ceramic pot","decorative pot","flower pot","plant pot","home decor pot"] }
+{ "index": { "_index": "products", "_id": "39" } }
+{ "productId": 39, "title": "Geometric Bookends Pair", "brand": "Generic", "short_description": "Pair of geometric design bookends made from solid plywood.", "search_keywords": ["bookends","wooden bookends","geometric bookends","desk bookends","plywood bookends"] }
+{ "index": { "_index": "products", "_id": "40" } }
+{ "productId": 40, "title": "Minimalist Coat Rack", "brand": "Generic", "short_description": "Wall mounted coat rack with 5 hooks, made from birch plywood.", "search_keywords": ["coat rack","wall coat rack","wall mounted rack","wooden coat rack","coat hooks"] }
+{ "index": { "_index": "products", "_id": "41" } }
+{ "productId": 41, "title": "Glass Plant Terrarium", "brand": "Generic", "short_description": "Hand-blown glass terrarium for succulents and air plants.", "search_keywords": ["glass terrarium","plant terrarium","succulent terrarium","glass planter","indoor terrarium"] }
+{ "index": { "_index": "products", "_id": "42" } }
+{ "productId": 42, "title": "Wooden Serving Tray", "brand": "Generic", "short_description": "Lightweight serving tray with handles, perfect for breakfast in bed.", "search_keywords": ["serving tray","wooden serving tray","plywood tray","breakfast tray","kitchen tray"] }

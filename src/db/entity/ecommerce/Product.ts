@@ -24,7 +24,7 @@ import { UploadFile } from "../uploads";
 @Index("idx_ecommerce_products_category", ["category"])
 @Index("idx_ecommerce_products_brand", ["brand"])
 @Index("idx_ecommerce_products_active", ["is_active"])
-@Index("idx_ecommerce_products_name", ["name"])
+@Index("idx_ecommerce_products_title", ["title"])
 export class Product {
     @PrimaryGeneratedColumn()
     id: number;
@@ -36,7 +36,7 @@ export class Product {
     title: string;
 
     @Column({ nullable: false })
-    name: string;
+    short_description: string;
 
     @Column({ nullable: false })
     slug: string;

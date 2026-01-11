@@ -25,6 +25,19 @@ export class ProductController {
         });
     }
 
+    async autocompleteSearch(req: Request, res: Response) {
+        const { client_query } = req.query;
+
+        const response = await productService.autocompleteSearch(
+            String(client_query)
+        );
+        res.status(200).json({
+            success: true,
+            data: response,
+            message: "Product fetched successfully",
+        });
+    }
+
     async getProductDetailsForCustomer(req: Request, res: Response) {
         const { isActive } = req.query;
         const { skip, take, keyword, isPaginationEnabled }: IPagination =
