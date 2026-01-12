@@ -1,11 +1,7 @@
 node_modules
 /node_modules
 # Keep environment variables out of version control
-.env
 dist
 /dist
-.env.local
-.env.development
-.env.test
-.env.production
 /data/
+config.bat

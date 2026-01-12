@@ -26,6 +26,9 @@ const APP_CONSTANT = {
     START_APP_EMAIL: process.env.START_APP_EMAIL,
     NEXT_CLIENT_URL: process.env.NEXT_CLIENT_URL,
     REVALIDATE_TOKEN: process.env.REVALIDATE_TOKEN,
+    ELASTICSEARCH_URL: process.env.ELASTICSEARCH_URL,
+    ES_USERNAME: process.env.ES_USERNAME,
+    ES_PASSWORD: process.env.ES_PASSWORD,
 };
 
 export default APP_CONSTANT;

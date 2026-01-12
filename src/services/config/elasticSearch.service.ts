@@ -1,6 +1,8 @@
 import { Client } from "@elastic/elasticsearch";
+import { ElasticsearchService } from "../../config/elasticSearch";
 import { Product } from "../../db/entity/ecommerce/Product";
 
+const esService = ElasticsearchService.getInstance();
 interface IESProductSource {
     productId: number;
     title: string;
@@ -14,47 +16,7 @@ export class SearchService {
     private productIndexName = "products";
 
     constructor() {
-        this.esClient = new Client({
-            node: "http://localhost:9200",
-            auth: {
-                username: "elastic",
-                password: "BvBmMrhW",
-            },
-            maxRetries: 5,
-            requestTimeout: 60000,
-            // Remove sniffOnStart if having connection issues
-            // sniffOnStart: true,
-        });
-
-        this.testConnection();
-        console.log("✅ SearchService initialized");
-    }
-
-    /** Test Elasticsearch connection */
-    async testConnection() {
-        try {
-            const health = await this.esClient.cluster.health({});
-            console.log("✅ Elasticsearch connected:", health);
-
-            // Check if index exists
-            const indexExists = await this.esClient.indices.exists({
-                index: this.productIndexName,
-            });
-
-            console.log({
-                indexExists,
-            });
-
-            if (!indexExists) {
-                return;
-            }
-        } catch (error) {
-            console.error("❌ Cannot connect to Elasticsearch:", error);
-            console.log(
-                "Make sure Elasticsearch is running on http://localhost:9200"
-            );
-            console.log("Run: docker-compose up -d (if using docker-compose)");
-        }
+        this.esClient = esService.getClient();
     }
 
     /** Insert a single product into Elasticsearch */
@@ -142,11 +104,11 @@ export class SearchService {
     }
 
     /** Autocomplete suggestions */
-    async autocomplete(clientQuery: string, size = 10) {
+    async autocomplete(clientQuery: string, size = 12) {
         try {
             const result = await this.esClient.search<IESProductSource>({
                 index: "products",
-                size: 10,
+                size: size,
                 _source: [
                     "productId",
                     "title",
