@@ -13,16 +13,17 @@ import { TaskStatus } from "../db/entity/taskStatus";
 import { UploadFile } from "../db/entity/uploads";
 import createPagination from "../utils/createPagination";
 import dataSource from "../db/data-source";
+import { generateBookingSummary } from "../ai/bookingSummary.chain";
 
 export class TaskService {
     constructor(
         private readonly taskRepository = dataSource.getRepository(Task),
         private readonly uploadRepository = dataSource.getRepository(
-            UploadFile
+            UploadFile,
         ),
         private readonly taskStatusRepository = dataSource.getRepository(
-            TaskStatus
-        )
+            TaskStatus,
+        ),
     ) {}
 
     async create(task: ITask) {
@@ -71,12 +72,15 @@ export class TaskService {
           <br/>
           Price: $${r.room.roomType.roomPrice}
         </li>
-      `
+      `,
             )
             .join("");
 
         payload.taskNumber = `JT-${booking.userBookingId}`;
         payload.title = `Booking Id:-  ${booking.userBookingId}: ${booking.customer.name}`;
+
+        // const aiSummaryResponse = await generateBookingSummary(booking);
+
         payload.description = `
                                 <h1>Booking Confirmation</h1>
                                 <p>Customer Name:  ${booking.customer.name},</p>
@@ -84,10 +88,10 @@ export class TaskService {
                                     booking.userBookingId
                                 }</strong> has been confirmed.</p>
                                 <p><strong>Check-in:</strong> ${new Date(
-                                    booking.checkInDate
+                                    booking.checkInDate,
                                 ).toLocaleString()}</p>
                                 <p><strong>Check-out:</strong> ${new Date(
-                                    booking.checkOutDate
+                                    booking.checkOutDate,
                                 ).toLocaleString()}</p>
                                 <p><strong>Total Price:</strong> $${
                                     booking.totalPrice
@@ -151,7 +155,7 @@ export class TaskService {
                 skip,
                 take,
                 totalCount,
-                isPaginationEnabled
+                isPaginationEnabled,
             ),
         };
     }
@@ -285,7 +289,7 @@ export class TaskService {
                     return await this.uploadRepository.findOne({
                         where: { id: uploadId },
                     });
-                })
+                }),
             )
         ).filter((uploadId): uploadId is UploadFile => uploadId !== null);
 

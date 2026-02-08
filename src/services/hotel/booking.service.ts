@@ -43,11 +43,11 @@ export class BookingService {
             throw new AppError(
                 "Bad Request. Missing Key.",
                 400,
-                ErrorType.BAD_REQUEST_ERROR
+                ErrorType.BAD_REQUEST_ERROR,
             );
         } else {
             const alreadyCachedBookingKey = await RedisService.getValue(
-                `bookingKey:${bookingIdemKey}`
+                `bookingKey:${bookingIdemKey}`,
             );
 
             if (alreadyCachedBookingKey) {
@@ -58,7 +58,7 @@ export class BookingService {
 
                 await RedisService.setValue(
                     `bookingKey:${bookingIdemKey}`,
-                    JSON.stringify(bookingResult)
+                    JSON.stringify(bookingResult),
                 );
 
                 return bookingResult;
@@ -89,7 +89,7 @@ export class BookingService {
                         roomList.push(room);
                         totalPrice += Number(room.roomType.roomPrice);
                     }
-                })
+                }),
             );
 
             let customerResult;
@@ -122,7 +122,7 @@ export class BookingService {
                 throw new AppError(
                     "User Error.",
                     500,
-                    ErrorType.INTERNAL_SERVER_ERROR
+                    ErrorType.INTERNAL_SERVER_ERROR,
                 );
             }
 
@@ -132,7 +132,7 @@ export class BookingService {
 
             const userBookingNumber = String(totalBookingCount + 1).padStart(
                 4,
-                "0"
+                "0",
             );
 
             const newBooking = queryRunner.manager.create(Booking, {
@@ -158,7 +158,7 @@ export class BookingService {
                         .count();
 
                     const userBookingRoomNumber = String(
-                        totalBookingRoomCount + index + 1
+                        totalBookingRoomCount + index + 1,
                     ).padStart(4, "0");
 
                     const newBookingRoom = queryRunner.manager.create(
@@ -168,13 +168,13 @@ export class BookingService {
                             room_status: "BOOKED",
                             room,
                             userBookingRoomId: `BRID-${userBookingRoomNumber}`,
-                        }
+                        },
                     );
 
                     return await queryRunner.manager
                         .getRepository(BookingRoom)
                         .save(newBookingRoom);
-                })
+                }),
             );
 
             await queryRunner.commitTransaction();
@@ -238,7 +238,7 @@ export class BookingService {
                 skip,
                 take,
                 totalCount,
-                isPaginationEnabled
+                isPaginationEnabled,
             ),
         };
     }
@@ -246,14 +246,14 @@ export class BookingService {
     async getById(id: number) {
         const result = await this.bookingRepository.findOne({
             where: { id: id },
-            relations: ["customer"],
+            relations: ["customer", "aiSummaries"],
         });
 
         if (!result) {
             throw new AppError(
                 "Booking not found.",
                 404,
-                ErrorType.NOT_FOUND_ERROR
+                ErrorType.NOT_FOUND_ERROR,
             );
         }
 
@@ -284,9 +284,8 @@ export class BookingService {
         payload.status = status;
         payload.retries = retry;
 
-        const result = await this.bookingServiceFailuresRepository.save(
-            payload
-        );
+        const result =
+            await this.bookingServiceFailuresRepository.save(payload);
         return result;
     }
 

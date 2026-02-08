@@ -2,6 +2,7 @@ import {
     BOOKING_EMAIL,
     BOOKING_LOGS,
     BOOKING_NOTIFICATION,
+    BOOKING_SUMMARY,
     BOOKING_TASK,
 } from "../../events/bookingEvents";
 import { Request, Response } from "express";
@@ -10,6 +11,7 @@ import { BookingService } from "../../services/hotel/booking.service";
 import { IBookingResponse } from "../../types/payload";
 import { IPagination } from "../../types/express";
 import { eventBus } from "../../events/eventBus";
+import { generateBookingSummary } from "../../ai/bookingSummary.chain";
 import normalizeToString from "../../utils/sanatizeQueryParams";
 
 const bookingService = new BookingService();
@@ -53,6 +55,12 @@ export class BookingController {
                 addedBy: 1,
                 feature_id: req.body.feature_id,
             });
+
+            // eventBus.emit(BOOKING_SUMMARY, {
+            //     ...result,
+            //     addedBy: 1,
+            //     feature_id: req.body.feature_id,
+            // });
         }
 
         res.status(200).json({
@@ -92,6 +100,8 @@ export class BookingController {
     async getById(req: Request, res: Response) {
         const { id } = req.params;
         const result = await bookingService.getById(Number(id));
+
+        // const aiBookingSummaryResponse = await generateBookingSummary(result);
         res.status(200).json({
             success: true,
             data: result,

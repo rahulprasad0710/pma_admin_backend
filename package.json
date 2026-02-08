@@ -38,6 +38,9 @@
     "dependencies": {
         "@aws-sdk/client-s3": "^3.826.0",
         "@aws-sdk/s3-request-presigner": "^3.826.0",
+        "@langchain/community": "^1.1.12",
+        "@langchain/core": "^1.1.19",
+        "@langchain/ollama": "^1.2.2",
         "@types/cors": "^2.8.17",
         "@types/morgan": "^1.9.9",
         "@types/nodemailer": "^6.4.17",

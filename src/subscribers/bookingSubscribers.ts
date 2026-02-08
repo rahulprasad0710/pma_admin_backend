@@ -2,6 +2,7 @@ import {
     BOOKING_EMAIL,
     BOOKING_LOGS,
     BOOKING_NOTIFICATION,
+    BOOKING_SUMMARY,
     BOOKING_TASK,
 } from "../events/bookingEvents";
 import { BookingServiceEnum, BookingStatusEnum } from "../enums/BookingEnum";
@@ -18,6 +19,8 @@ import NotificationService from "../services/notification.service";
 import { Priority } from "../enums/Priority";
 import TaskService from "../services/task.service";
 import UserService from "../services/users.service";
+import { addBookingAISummaryToQueue } from "../jobs/bookingAISummary.queue";
+import { addEmailToQueue } from "../jobs/emailQueue";
 // subscribers/bookingSubscribers.ts
 import { eventBus } from "../events/eventBus";
 import socketFn from "../services/config/socket.service";
@@ -30,9 +33,8 @@ const userService = new UserService();
 // 1. Email subscriber
 eventBus.on(BOOKING_EMAIL, async (booking: IBookingResponse) => {
     try {
-        const response = await emailService.sendBookingConfirmationEmail(
-            booking
-        );
+        const response =
+            await emailService.sendBookingConfirmationEmail(booking);
 
         const { customer: _customer, hotel: _hotel, ...payload } = booking;
 
@@ -115,7 +117,7 @@ eventBus.on(BOOKING_NOTIFICATION, async (booking: IBookingResponseDetails) => {
                 message: `New Booking ${
                     booking.userBookingId
                 } for date ${new Date(
-                    booking.checkInDate
+                    booking.checkInDate,
                 ).toLocaleDateString()} has been created.`,
                 type: "BOOKING_NOTIFICATION",
                 payload: "",
@@ -129,16 +131,16 @@ eventBus.on(BOOKING_NOTIFICATION, async (booking: IBookingResponseDetails) => {
         const notificationToUsersResponse =
             await notificationService.addNotificationToUsers(
                 createNotificationResponse.id,
-                featureMember?.map((user) => user.id)
+                featureMember?.map((user) => user.id),
             );
 
         await Promise.all(
             featureMember?.map(async (featureUsers) => {
                 await socketFn.sendNotificationByUserId(
                     featureUsers.id,
-                    createNotificationResponse
+                    createNotificationResponse,
                 );
-            })
+            }),
         );
 
         const { customer: _customer, hotel: _hotel, ...payload } = booking;
@@ -192,6 +194,30 @@ eventBus.on(BOOKING_TASK, async (booking: IBookingResponseDetails) => {
             error: JSON.stringify(err),
             retry: 0,
             serviceName: BookingServiceEnum.BOOKING_TASK,
+            status: BookingStatusEnum.FAILED,
+        });
+    }
+});
+
+eventBus.on(BOOKING_SUMMARY, async (booking: IBookingResponse) => {
+    try {
+        const response = await addBookingAISummaryToQueue(booking);
+
+        await bookingService.createBookingLog({
+            bookingId: booking.id,
+            action: ActionAction.EMAIL_SENT,
+            details: JSON.stringify(response),
+            serviceName: BookingServiceEnum.BOOKING_EMAIL,
+        });
+
+        return response;
+    } catch (err) {
+        console.log("LOG: ~ err BOOKING_SUMMARY:", err);
+        await bookingService.createBookingServiceFailures({
+            bookingId: booking.id,
+            error: JSON.stringify(err),
+            retry: 0,
+            serviceName: BookingServiceEnum.BOOKING_EMAIL,
             status: BookingStatusEnum.FAILED,
         });
     }
