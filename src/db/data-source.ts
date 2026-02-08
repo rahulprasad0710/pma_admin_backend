@@ -26,7 +26,7 @@ const AppDataSource = new DataSource({
 
 export const dataSource = new DataSource({
     type: "postgres",
-    url: "postgresql://postgres:rahul99dbsuperbase@db.huzukjbojrvxsdrrlbzn.supabase.co:5432/postgres",
+    url: APP_CONSTANT.SUPERBASE_DB_URL,
 
     ssl: {
         rejectUnauthorized: false, // REQUIRED for Supabase
@@ -36,10 +36,9 @@ export const dataSource = new DataSource({
     logging: false,
 
     entities: entities,
-    migrations: ["dist/migrations/*.js"],
 
     extra: {
-        max: 5, // IMPORTANT: Supabase pgbouncer
+        max: 5,
     },
 });
 

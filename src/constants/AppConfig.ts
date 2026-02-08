@@ -35,6 +35,7 @@ const APP_CONSTANT = {
     START_APP_EMAIL: process.env.START_APP_EMAIL,
     NEXT_CLIENT_URL: process.env.NEXT_CLIENT_URL,
     REVALIDATE_TOKEN: process.env.REVALIDATE_TOKEN,
+    SUPERBASE_DB_URL: process.env.SUPERBASE_DB_URL,
 };
 
 export default APP_CONSTANT;
