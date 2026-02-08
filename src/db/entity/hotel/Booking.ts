@@ -8,6 +8,7 @@ import {
 } from "typeorm";
 
 import { BookingRoom } from "./BookingRoom";
+import { BookingSummary } from "./BookingSummary";
 import { Customer } from "../client/index";
 import { InternalCompany } from "../InternalCompany";
 
@@ -58,4 +59,7 @@ export class Booking {
         eager: false,
     })
     bookingRooms: BookingRoom[];
+
+    @OneToMany(() => BookingSummary, (summary) => summary.booking)
+    aiSummaries: BookingSummary[];
 }

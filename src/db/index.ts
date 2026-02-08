@@ -16,6 +16,7 @@ import { BaseEntityWithAudit } from "./entity/Audit";
 // Hotel Entity
 import { Booking } from "./entity/hotel/Booking";
 import { BookingRoom } from "./entity/hotel/BookingRoom";
+import { BookingSummary } from "./entity/hotel/BookingSummary";
 import { Comment } from "./entity/comment";
 // import { Customer } from "./entity/Customer";
 import { Department } from "./entity/department";
@@ -78,4 +79,5 @@ export default [
     Account,
     Session,
     Verification,
+    BookingSummary,
 ];
