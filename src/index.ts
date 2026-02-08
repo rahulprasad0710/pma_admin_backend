@@ -30,17 +30,17 @@ app.use(
             "http://localhost:5173",
             "http://localhost:3000",
             "https://workcentrik.publicvm.com",
-            "http://3.109.201.51",
+            "http://3.110.171.209:8000",
         ],
         credentials: true,
-    })
+    }),
 );
 app.use(helmet());
 app.use(morgan("common"));
 app.use(
     helmet.crossOriginResourcePolicy({
         policy: "cross-origin",
-    })
+    }),
 );
 
 app.use(cookieParser());
