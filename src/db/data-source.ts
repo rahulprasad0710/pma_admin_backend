@@ -4,7 +4,7 @@ import APP_CONSTANT from "../constants/AppConfig";
 import { DataSource } from "typeorm";
 import entities from "./index";
 
-const AppDataSource = new DataSource({
+const dataSource = new DataSource({
     type: "postgres",
     host: APP_CONSTANT.DB_HOST,
     port: APP_CONSTANT.DB_PORT,
@@ -24,12 +24,12 @@ const AppDataSource = new DataSource({
     },
 });
 
-export const dataSource = new DataSource({
+export const AppDataSource = new DataSource({
     type: "postgres",
     url: APP_CONSTANT.SUPERBASE_DB_URL,
 
     ssl: {
-        rejectUnauthorized: false, // REQUIRED for Supabase
+        rejectUnauthorized: false,
     },
 
     synchronize: true,
