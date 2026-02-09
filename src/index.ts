@@ -26,18 +26,33 @@ startJobs();
 app.use(express.json());
 app.use(
     cors({
-        origin: [
-            "http://localhost:5173",
-            "http://localhost:3000",
-            "https://workcentrik.publicvm.com",
-            "http://localhost:5000",
-            "http://3.110.171.209:5000",
-            "http://pma.hiracentrik.com",
-            "http://pma.hiracentrik.com:5000",
-        ],
+        origin: function (origin, callback) {
+            // allow requests with no origin like curl or server-to-server
+            if (!origin) return callback(null, true);
+
+            const allowed = [
+                "http://localhost:5173",
+                "http://localhost:3000",
+                "https://workcentrik.publicvm.com",
+                "http://localhost:5000",
+                "http://3.110.171.209",
+                "http://3.110.171.209:5000",
+                "http://pma.hiracentrik.com",
+                "http://pma.hiracentrik.com:5000",
+            ];
+
+            if (allowed.indexOf(origin) !== -1) {
+                callback(null, true);
+            } else {
+                callback(new Error("Not allowed by CORS"));
+            }
+        },
         credentials: true,
     }),
 );
+
+app.options("*", cors());
+
 app.use(helmet());
 app.use(morgan("common"));
 app.use(
